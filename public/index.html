@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4c928">
+  <title>GIRA'S BEACH | Reserve sua quadra</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">G</span><span>GIRA'S <b>BEACH</b></span></a>
+  <nav><a href="#sobre">O espaço</a><a href="#reservar">Reservar</a><a href="#conta">Minha conta</a></nav>
+  <button class="btn btn-dark" id="navLogin">Entrar</button>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">BEACH TENNIS • SOL • MOVIMENTO</p>
+      <h1>Seu jogo.<br><em>Sua praia.</em></h1>
+      <p>Escolha sua quadra, encontre o melhor horário e reserve online em poucos passos.</p>
+      <a class="btn btn-dark" href="#reservar">Reservar horário <span>↗</span></a>
+    </div>
+    <div class="hero-art"><div class="sun"></div><div class="court-lines"></div><span class="art-label">PLAY<br>YOUR<br>GAME</span></div>
+  </section>
+  <section class="features" id="sobre">
+    <article><span>01</span><h3>Escolha sua quadra</h3><p>Veja as quadras disponíveis e selecione a ideal para seu jogo.</p></article>
+    <article><span>02</span><h3>Agende online</h3><p>Consulte datas e horários sem precisar mandar mensagem.</p></article>
+    <article><span>03</span><h3>Pague como preferir</h3><p>Finalize com PIX ou cartão pelo ambiente de pagamento.</p></article>
+  </section>
+  <section class="booking-section" id="reservar">
+    <div><p class="eyebrow">AGENDE AGORA</p><h2>Partiu jogar?</h2><p>Entre na sua conta para consultar a disponibilidade e reservar.</p></div>
+    <div class="booking-card">
+      <label>Data desejada<input id="date" type="date"></label>
+      <label>Quadra<select id="court"><option value="1">Quadra 1</option></select></label>
+      <button class="btn btn-dark full" id="checkAvailability">Consultar horários</button>
+      <div id="availability" class="availability">Faça login para consultar e reservar horários.</div>
+    </div>
+  </section>
+  <section class="account-section" id="conta">
+    <div><p class="eyebrow">ÁREA DO CLIENTE</p><h2>Entre para reservar.</h2><p>Crie sua conta e acompanhe seus agendamentos em um só lugar.</p></div>
+    <div class="auth-grid">
+      <form id="loginForm" class="panel">
+        <h3>Já tenho cadastro</h3>
+        <label>E-mail<input name="email" type="email" required></label>
+        <label>Senha<input name="password" type="password" required></label>
+        <button class="btn btn-dark full">Entrar</button>
+      </form>
+      <form id="registerForm" class="panel">
+        <h3>Criar conta</h3>
+        <label>Nome completo<input name="name" required></label>
+        <label>E-mail<input name="email" type="email" required></label>
+        <label>Telefone<input name="phone" type="tel" required></label>
+        <label>Senha (mínimo 10 caracteres)<input name="password" type="password" minlength="10" required></label>
+        <button class="btn btn-yellow full">Cadastrar</button>
+      </form>
+    </div>
+  </section>
+  <section class="account-section hidden" id="myAccount">
+    <div><p class="eyebrow">MINHA CONTA</p><h2>Olá, <span id="customerName"></span>!</h2><p>Acompanhe suas reservas.</p><button class="btn btn-outline" id="logout">Sair</button></div>
+    <div class="panel"><h3>Minhas reservas</h3><div id="myBookings">Carregando...</div></div>
+  </section>
+ 
+<section class="admin-section hidden" id="adminPanel">
+  <p class="eyebrow">ÁREA RESTRITA</p>
+  <h2>Painel administrativo</h2>
+
+  <div class="stats" id="adminStats"></div>
+
+  <div class="panel">
+    <h3>Reservas recentes</h3>
+    <div id="adminBookings"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Gerenciar quadras</h3>
+
+    <form id="courtForm" class="inline-form">
+      <input name="name" placeholder="Nome da quadra" required>
+      <input name="description" placeholder="Descrição">
+      <button class="btn btn-yellow">Adicionar quadra</button>
+    </form>
+
+    <div id="adminCourts">
+      <p class="muted">Carregando quadras...</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Configurar preço por dia da semana</h3>
+
+    <form id="priceForm" class="inline-form">
+      <select name="weekday">
+        <option value="0">Domingo</option>
+        <option value="1">Segunda</option>
+        <option value="2">Terça</option>
+        <option value="3">Quarta</option>
+        <option value="4">Quinta</option>
+        <option value="5">Sexta</option>
+        <option value="6">Sábado</option>
+      </select>
+
+      <input name="startTime" type="time" value="08:00" required>
+      <input name="endTime" type="time" value="22:00" required>
+      <input name="slotMinutes" type="number" value="60" min="30" max="240" required>
+      <input name="price" type="number" min="0" step="0.01" placeholder="Preço em R$" required>
+
+      <button class="btn btn-yellow">Salvar preço</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h3>Gerenciar horários e preços</h3>
+    <div id="adminOpeningHours">
+      <p class="muted">Carregando horários...</p>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer><a class="brand" href="#"><span class="brand-mark">G</span><span>GIRA'S <b>BEACH</b></span></a><span>Seu jogo. Sua praia.</span><span>© <span id="year"></span> GIRA'S BEACH</span></footer>
+<div class="toast" id="toast" role="status"></div>
+<script src="/app.js"></script>
+</body></html>

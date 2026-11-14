@@ -1,0 +1,59 @@
+-- Esquema SQLite de referência. O servidor cria estas tabelas automaticamente
+-- ao iniciar, por meio de src/database/db.js.
+PRAGMA foreign_keys = ON;
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL COLLATE NOCASE UNIQUE,
+  phone TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'customer' CHECK(role IN ('customer','admin')),
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS courts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS opening_hours (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  weekday INTEGER NOT NULL CHECK(weekday BETWEEN 0 AND 6),
+  start_time TEXT NOT NULL,
+  end_time TEXT NOT NULL,
+  slot_minutes INTEGER NOT NULL DEFAULT 60,
+  price_cents INTEGER NOT NULL CHECK(price_cents >= 0),
+  active INTEGER NOT NULL DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS blocked_slots (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  court_id INTEGER NOT NULL REFERENCES courts(id),
+  starts_at TEXT NOT NULL,
+  ends_at TEXT NOT NULL,
+  reason TEXT DEFAULT ''
+);
+CREATE TABLE IF NOT EXISTS bookings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  court_id INTEGER NOT NULL REFERENCES courts(id),
+  starts_at TEXT NOT NULL,
+  ends_at TEXT NOT NULL,
+  amount_cents INTEGER NOT NULL CHECK(amount_cents >= 0),
+  status TEXT NOT NULL DEFAULT 'pending_payment',
+  payment_provider_id TEXT,
+  payment_method TEXT,
+  expires_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  booking_id INTEGER NOT NULL UNIQUE REFERENCES bookings(id),
+  provider TEXT NOT NULL DEFAULT 'mercado_pago',
+  provider_payment_id TEXT,
+  status TEXT NOT NULL DEFAULT 'created',
+  amount_cents INTEGER NOT NULL,
+  raw_status TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
